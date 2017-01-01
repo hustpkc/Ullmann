@@ -127,7 +127,7 @@ public class Ullmann {
 			if (d == -1) {
 				return false;
 			}
-			
+
 			// 找到一个M0，验证是否符合条件
 			if (d == row) {
 				if (this.isTrueFor(MA, MB, M0)) {// 条件成立
@@ -194,14 +194,14 @@ public class Ullmann {
 	public void setQuerys(ArrayList<Graph> querys) {
 		this.querys = querys;
 	}
-	
+
 	public void loadfile(String dbfile, String qfile) throws IOException {
 		BufferedReader dbreader = new BufferedReader(new InputStreamReader(new FileInputStream(dbfile)));
 		String line = dbreader.readLine();
 		Graph curg;
 		if (line.startsWith("t #")) {
 			curg = new Graph();
-			while((line = dbreader.readLine()) != null) {
+			while ((line = dbreader.readLine()) != null) {
 				if (line.startsWith("t #")) {
 					this.mygraphdb.add(curg);
 					curg = new Graph();
@@ -222,12 +222,12 @@ public class Ullmann {
 				}
 			}
 		}
-		
+
 		BufferedReader qreader = new BufferedReader(new InputStreamReader(new FileInputStream(qfile)));
 		line = qreader.readLine();
 		if (line.startsWith("t #")) {
 			curg = new Graph();
-			while((line = qreader.readLine()) != null) {
+			while ((line = qreader.readLine()) != null) {
 				if (line.startsWith("t #")) {
 					this.querys.add(curg);
 					curg = new Graph();
@@ -248,27 +248,31 @@ public class Ullmann {
 				}
 			}
 		}
-		
+
 	}
-	
-	public static void main(String[] args){
+
+	public static void main(String[] args) {
 		String dbfile = "C:\\Users\\wyx\\workspace\\Ullmann\\graphDB\\mygraphdb.data";
-		String qfile = "C:\\Users\\wyx\\workspace\\Ullmann\\graphDB\\Q4.my";
+		String qfile = "C:\\Users\\wyx\\workspace\\Ullmann\\graphDB\\Q24.my";
 		Ullmann ullmann = new Ullmann();
 		try {
 			ullmann.loadfile(dbfile, qfile);
 			System.out.println("size of my graphdb: " + ullmann.getMygraphdb().size());
 			System.out.println("size of my querys: " + ullmann.getQuerys().size());
-			
+
+			long start = System.currentTimeMillis();
 			for (int i = 0; i < ullmann.getMygraphdb().size(); i++) {
 				Graph target = ullmann.getMygraphdb().get(i);
-				for (int j = 0; j < ullmann.getQuerys().size(); j++) {
+				for (int j = 0; j < 1; j++) {
 					Graph query = ullmann.getQuerys().get(j);
 					if (ullmann.match(query, target)) {
-						System.out.println("Target #" + i + " matches query #" + j);
+						// System.out.println("Target #" + i + " matches query
+						// #" + j);
 					}
 				}
 			}
+			long end = System.currentTimeMillis();
+			System.out.println("程序运行时间： " + (end - start) + "ms");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
